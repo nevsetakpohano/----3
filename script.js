@@ -22,7 +22,27 @@ const nodePositions = [
   { x: 120, y: 350 }, //10
 ];
 
-function generateAdjacencyMatrix() {
+function generateAdjacencyMatrixSymmetrical() {
+  const seed = 3301;
+  let matrix = [];
+  Math.seedrandom(seed);
+  for (let i = 0; i < qntnNodes; i++) {
+    matrix[i] = [];
+    for (let j = 0; j <= i; j++) {
+      if (i === j) {
+        matrix[i][j] = 0;
+      } else {
+        let value = Math.random() * 2 * coef;
+        value = value < 1 ? 0 : 1;
+        matrix[i][j] = value;
+        matrix[j][i] = value;
+      }
+    }
+  }
+  return matrix;
+}
+
+function generateAdjacencyMatrixNotSymmetrical() {
   const seed = 3301;
   let matrix = [];
   Math.seedrandom(seed);
@@ -135,11 +155,14 @@ function drawEdges(matrix, context, napr) {
   }
 }
 
-const matrix = generateAdjacencyMatrix();
-console.log(matrix);
+const matrixSymmetrical = generateAdjacencyMatrixSymmetrical();
+console.log(matrixSymmetrical);
 
-drawEdges(matrix, contextNeNapr);
-drawEdges(matrix, contextNapr);
+const matrixNotSymmetrical = generateAdjacencyMatrixNotSymmetrical();
+console.log(matrixNotSymmetrical);
+
+drawEdges(matrixSymmetrical, contextNeNapr);
+drawEdges(matrixNotSymmetrical, contextNapr);
 
 drawNodes(contextNeNapr);
 drawNodes(contextNapr);
