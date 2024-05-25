@@ -30,7 +30,9 @@ function generateAdjacencyMatrixSymmetrical() {
     matrix[i] = [];
     for (let j = 0; j <= i; j++) {
       if (i === j) {
-        matrix[i][j] = 0;
+        let value = Math.random() * 2 * coef;
+        value = value < 1 ? 0 : 1;
+        matrix[i][j] = value;
       } else {
         let value = Math.random() * 2 * coef;
         value = value < 1 ? 0 : 1;
