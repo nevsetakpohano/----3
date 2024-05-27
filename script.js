@@ -93,10 +93,10 @@ function drawEdges(matrix, context) {
   for (let i = 0; i < qntnNodes; i++) {
     for (let j = 0; j < qntnNodes; j++) {
       if (matrix[i][j] === 1) {
-        const startX = nodePositions[j].x;
-        const startY = nodePositions[j].y;
-        const endX = nodePositions[i].x;
-        const endY = nodePositions[i].y;
+        const startX = nodePositions[i].x;
+        const startY = nodePositions[i].y;
+        const endX = nodePositions[j].x;
+        const endY = nodePositions[j].y;
 
         context.beginPath();
         context.moveTo(startX, startY);
