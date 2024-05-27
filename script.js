@@ -28,16 +28,15 @@ function generateAdjacencyMatrixSymmetrical() {
   Math.seedrandom(seed);
   for (let i = 0; i < qntnNodes; i++) {
     matrix[i] = [];
-    for (let j = 0; j <= i; j++) {
-      if (i === j) {
-        let value = Math.random() * 2 * coef;
-        value = value < 1 ? 0 : 1;
-        matrix[i][j] = value;
-      } else {
-        let value = Math.random() * 2 * coef;
-        value = value < 1 ? 0 : 1;
-        matrix[i][j] = value;
-        matrix[j][i] = value;
+    for (let j = 0; j < qntnNodes; j++) {
+      matrix[i][j] = Math.random() * 2 * coef;
+      matrix[i][j] = matrix[i][j] < 1 ? 0 : 1;
+    }
+  }
+  for (let i = 0; i < qntnNodes; i++) {
+    for (let j = 0; j < qntnNodes; j++) {
+      if (matrix[i][j] === 1 && matrix[i][j] !== matrix[j][i]) {
+        matrix[j][i] = 1;
       }
     }
   }
@@ -163,8 +162,8 @@ console.log(matrixSymmetrical);
 const matrixNotSymmetrical = generateAdjacencyMatrixNotSymmetrical();
 console.log(matrixNotSymmetrical);
 
-drawEdges(matrixSymmetrical, contextNeNapr);
 drawEdges(matrixNotSymmetrical, contextNapr);
+drawEdges(matrixSymmetrical, contextNeNapr);
 
 drawNodes(contextNeNapr);
 drawNodes(contextNapr);
