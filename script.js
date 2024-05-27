@@ -85,9 +85,11 @@ const drawArrow = (x, y, context, angle) => {
   context.restore();
 };
 
-function drawEdges(matrix, context, napr) {
+function drawEdges(matrix, context) {
   context.strokeStyle = "rgba(0, 0, 0, 1)";
   context.lineWidth = 2;
+  const offset = 20;
+
   for (let i = 0; i < qntnNodes; i++) {
     for (let j = 0; j < qntnNodes; j++) {
       if (matrix[i][j] === 1) {
@@ -98,15 +100,29 @@ function drawEdges(matrix, context, napr) {
 
         context.beginPath();
         context.moveTo(startX, startY);
+
+        let midX, midY;
+
+        if (matrix[j][i] === 1 && i !== j && context === contextNapr) {
+          midX = (startX + endX) / 2 + (startY - endY) / offset;
+          midY = (startY + endY) / 2 + (endX - startX) / offset;
+          context.lineTo(midX, midY);
+        }
         context.lineTo(endX, endY);
         context.stroke();
 
         if (context === contextNapr) {
-          const angle = Math.atan2(endY - startY, endX - startX);
-          const indentX = radius * Math.cos(angle);
-          const indentY = radius * Math.sin(angle);
-
-          drawArrow(startX + indentX, startY + indentY, context, angle);
+          if (matrix[j][i] === 1 && i !== j) {
+            const midAngle = Math.atan2(midY - endY, midX - endX);
+            const indentMidX = radius * Math.cos(midAngle);
+            const indentMidY = radius * Math.sin(midAngle);
+            drawArrow(endX + indentMidX, endY + indentMidY, context, midAngle);
+          } else {
+            const angle = Math.atan2(startY - endY, startX - endX);
+            const indentX = radius * Math.cos(angle);
+            const indentY = radius * Math.sin(angle);
+            drawArrow(endX + indentX, endY + indentY, context, angle);
+          }
         }
 
         if (i === j) {
@@ -130,7 +146,7 @@ function drawEdges(matrix, context, napr) {
             }
 
             context.stroke();
-          } else {
+          } else if (i > 4) {
             context.arc(
               endX,
               endY + radius * 2,
@@ -142,7 +158,7 @@ function drawEdges(matrix, context, napr) {
             if (context === contextNapr) {
               drawArrow(
                 nodePositions[i].x + 5,
-                nodePositions[i].y - 15,
+                nodePositions[i].y + 15,
                 context,
                 Math.PI / 4
               );
